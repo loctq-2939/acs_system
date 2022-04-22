@@ -2,6 +2,7 @@ import 'package:acs_1/@share/constants/value.constant.dart';
 import 'package:acs_1/@share/router/pages.dart';
 import 'package:acs_1/repository/models/Profile.dart';
 import 'package:acs_1/repository/models/appointment.dart';
+import 'package:acs_1/repository/models/date.dart';
 import 'package:acs_1/repository/models/distric.dart';
 import 'package:acs_1/repository/models/ward.dart';
 import 'package:acs_1/repository/repo/service.repo.dart';
@@ -27,7 +28,9 @@ class BookingController extends GetxController {
 
   var listWard = <Ward>[].obs;
   var wardSelected = Ward().obs;
-  var isMale = true.obs;
+
+  var listDate = <DateObject>[].obs;
+  var dateSelected = DateObject().obs;
 
   final introKey = GlobalKey<IntroductionScreenState>();
   final _serviceRepo = Get.find<ServiceRepo>();
@@ -45,13 +48,14 @@ class BookingController extends GetxController {
   final lastNameController = TextEditingController();
   final phoneController = TextEditingController();
 
-  final _dataStorage  = Get.find<DataStorage>();
+  final _dataStorage = Get.find<DataStorage>();
 
   @override
   void onReady() {
     super.onReady();
     _getListService();
     _getListCity();
+    getListPage();
   }
 
   String? validatorAmount(String? value) {
@@ -167,6 +171,29 @@ class BookingController extends GetxController {
     }
   }
 
+  getListPage() async {
+    // DateObject day = DateObject(id: '0', value: 'Chọn giờ');
+    // listDate.add(day);
+    DateObject day1 = DateObject(
+      id: '${DateTime.now().year.toString()}-${DateTime.now().month.toString()}-${int.parse(DateTime.now().day.toString()) + 1}',
+      value:
+          '${int.parse(DateTime.now().day.toString()) + 1}-${DateTime.now().month.toString()}-${DateTime.now().year.toString()}',
+    );
+    DateObject day2 = DateObject(
+      id: '${DateTime.now().year.toString()}-${DateTime.now().month.toString()}-${int.parse(DateTime.now().day.toString()) + 2}',
+      value:
+          '${int.parse(DateTime.now().day.toString()) + 2}-${DateTime.now().month.toString()}-${DateTime.now().year.toString()}',
+    );
+    DateObject day3 = DateObject(
+      id: '${DateTime.now().year.toString()}-${DateTime.now().month.toString()}-${int.parse(DateTime.now().day.toString()) + 3}',
+      value:
+          '${int.parse(DateTime.now().day.toString()) + 3}-${DateTime.now().month.toString()}-${DateTime.now().year.toString()}',
+    );
+    listDate.add(day1);
+    listDate.add(day2);
+    listDate.add(day3);
+  }
+
   nextFirstPage() {
     if (firstPageFormKey.currentState?.validate() == true) {
       introKey.currentState?.controller.nextPage(
@@ -204,11 +231,8 @@ class BookingController extends GetxController {
             time: '8',
             quantity: int.tryParse(amountController.text));
         goTo(screen: ROUTER_CONFIRM_BOOKING, argument: appointment);
-      }
-      else {
-        showSnackBar(
-            title: "Báo lỗi",
-            content: "User id null");
+      } else {
+        showSnackBar(title: "Báo lỗi", content: "User id null");
       }
     }
   }

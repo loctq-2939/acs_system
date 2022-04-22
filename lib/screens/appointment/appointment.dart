@@ -4,6 +4,7 @@ import 'package:acs_1/styles/acs_colors.dart';
 import 'package:acs_1/styles/acs_typhoghraphy.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jiffy/jiffy.dart';
 
 class AppointmentScreen extends GetWidget<AppointmentController> {
   const AppointmentScreen({Key? key}) : super(key: key);
@@ -22,41 +23,18 @@ class AppointmentScreen extends GetWidget<AppointmentController> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Container(
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
-                decoration: BoxDecoration(
-                  color: ACSColors.white,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: ACSColors.primary, width: 1),
-                ),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton<String>(
-                    items: controller.statusList.map(buildMenuItem).toList(),
-                    icon: Image.asset('assets/icons/arrow-down.png'),
-                    elevation: 0,
-                    isExpanded: true,
-                    onChanged: (value) {
-                      if (value != null) {
-                        controller.status.value = value;
-                      }
-                    },
-                    value: controller.status.value,
-                  ),
-                ),
-              ),
+              const SizedBox(height: 30),
               SizedBox(
-                height: MediaQuery.of(context).size.height,
-                child: Obx(() => ListView.builder(
+                child: Obx(
+                  () => ListView.builder(
                     itemCount: controller.listAppointment.value.length,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (BuildContext context, int index) {
                       return InkWell(
                         onTap: () {
-                          controller.appointment.value = controller.listAppointment[index];
+                          controller.appointment.value =
+                              controller.listAppointment[index];
                           Get.to(
                             () => const AppointmentDetail(),
                           );
@@ -65,7 +43,7 @@ class AppointmentScreen extends GetWidget<AppointmentController> {
                           margin: const EdgeInsets.only(
                               left: 16, right: 16, bottom: 20),
                           padding: const EdgeInsets.all(16),
-                          height: 125,
+                          height: 130,
                           decoration: BoxDecoration(
                             color: ACSColors.white,
                             borderRadius: BorderRadius.circular(12),
@@ -76,33 +54,26 @@ class AppointmentScreen extends GetWidget<AppointmentController> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Expanded(
-                                flex: 1,
-                                child: Obx(() => Image.asset(
-                                    changeIconStatus(
-                                        controller.listAppointment[index].status),
-                                    height: 40,
-                                    width: 40,
-                                    color: changeColorStatus(
-                                        controller.listAppointment[index].status),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 13),
-                              Expanded(
                                 flex: 2,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: const [
                                     Text('Dịch vụ',
-                                        style: ACSTyphoghraphy.appointmentTitle),
+                                        style:
+                                            ACSTyphoghraphy.appointmentTitle),
+                                    SizedBox(height: 8),
                                     Text('Trạng thái',
-                                        style: ACSTyphoghraphy.appointmentTitle),
+                                        style:
+                                            ACSTyphoghraphy.appointmentTitle),
+                                    SizedBox(height: 8),
                                     Text('Thời gian',
-                                        style: ACSTyphoghraphy.appointmentTitle),
+                                        style:
+                                            ACSTyphoghraphy.appointmentTitle),
+                                    SizedBox(height: 8),
                                     Text('Ngày',
-                                        style: ACSTyphoghraphy.appointmentTitle),
+                                        style:
+                                            ACSTyphoghraphy.appointmentTitle),
                                   ],
                                 ),
                               ),
@@ -110,37 +81,39 @@ class AppointmentScreen extends GetWidget<AppointmentController> {
                                 flex: 3,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Obx(() => Text(
+                                    Obx(
+                                      () => Text(
                                         controller.listAppointment[index]
                                                 .description ??
                                             '',
-                                        style: ACSTyphoghraphy.appointmentDetail,
+                                        style:
+                                            ACSTyphoghraphy.appointmentDetail,
                                       ),
                                     ),
-                                    Obx(() => Text(
-                                        //TODO: fix
-                                        controller.listAppointment[index].status
-                                                .toString() ??
-                                            '',
-                                        style: ACSTyphoghraphy.appointmentDetail
-                                            .copyWith(
-                                          color: changeColorStatus(controller
-                                              .listAppointment[index].status),
-                                        ),
-                                      ),
-                                    ),
-                                    Obx(() => Text(
-                                          controller.listAppointment[index].time ??
+                                    const SizedBox(height: 8),
+                                    Obx(() => changeTextStatus(controller
+                                        .listAppointment[index].status)),
+                                    const SizedBox(height: 8),
+                                    Obx(
+                                      () => Text(
+                                          controller.listAppointment[index]
+                                                  .time ??
                                               '',
-                                          style: ACSTyphoghraphy.appointmentDetail),
+                                          style: ACSTyphoghraphy
+                                              .appointmentDetail),
                                     ),
-                                    Obx(() => Text(
-                                          controller.listAppointment[index].date ??
+                                    const SizedBox(height: 8),
+                                    Obx(
+                                      () => Text(
+                                          Jiffy(controller
+                                                      .listAppointment[index]
+                                                      .date)
+                                                  .format('dd-MM-yyyy') ??
                                               '',
-                                          style: ACSTyphoghraphy.appointmentDetail),
+                                          style: ACSTyphoghraphy
+                                              .appointmentDetail),
                                     ),
                                   ],
                                 ),
@@ -177,12 +150,26 @@ class AppointmentScreen extends GetWidget<AppointmentController> {
     return 'assets/icons/waiting.png';
   }
 
-  Color changeColorStatus(int? status) {
+  Text changeTextStatus(int? status) {
     if (status == 1) {
-      return Colors.red;
+      return Text(
+        'Đã hủy',
+        style: ACSTyphoghraphy.appointmentDetail.copyWith(color: Colors.red),
+      );
     } else if (status == 2) {
-      return Colors.green;
+      return Text(
+        'Đã nhận',
+        style: ACSTyphoghraphy.appointmentDetail.copyWith(color: Colors.orange),
+      );
+    } else if (status == 3) {
+      return Text(
+        'Đang chờ',
+        style: ACSTyphoghraphy.appointmentDetail.copyWith(color: Colors.blue),
+      );
     }
-    return Colors.blue;
+    return Text(
+      'Đã xong',
+      style: ACSTyphoghraphy.appointmentDetail.copyWith(color: Colors.green),
+    );
   }
 }

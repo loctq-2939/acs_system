@@ -1,10 +1,8 @@
-import 'package:acs_1/@share/utils/util.dart';
 import 'package:acs_1/screens/confirmbooking/confirm_booking.controller.dart';
 import 'package:acs_1/styles/acs_colors.dart';
 import 'package:acs_1/styles/acs_typhoghraphy.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 
 class ConfirmBooking extends GetWidget<ConfirmBookingController> {
   const ConfirmBooking({Key? key}) : super(key: key);
@@ -24,8 +22,8 @@ class ConfirmBooking extends GetWidget<ConfirmBookingController> {
             style: ACSTyphoghraphy.titleAppbar,
           ),
         ),
-        body: Obx(() =>
-            Column(
+        body: Obx(
+          () => Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -75,7 +73,8 @@ class ConfirmBooking extends GetWidget<ConfirmBookingController> {
                         ),
                         Expanded(
                           flex: 1,
-                          child: Text( controller.appointment.value.fullName ?? '',
+                          child: Text(
+                              controller.appointment.value.fullName ?? '',
                               style: ACSTyphoghraphy.confirmSubTitle),
                         ),
                       ],
@@ -93,7 +92,7 @@ class ConfirmBooking extends GetWidget<ConfirmBookingController> {
                         ),
                         Expanded(
                           flex: 1,
-                          child: Text( controller.appointment.value.phone ?? '',
+                          child: Text(controller.appointment.value.phone ?? '',
                               style: ACSTyphoghraphy.confirmSubTitle),
                         ),
                       ],
@@ -166,7 +165,8 @@ class ConfirmBooking extends GetWidget<ConfirmBookingController> {
                         ),
                         Expanded(
                           flex: 1,
-                          child: Text( controller.appointment.value.description ?? '',
+                          child: Text(
+                              controller.appointment.value.description ?? '',
                               style: ACSTyphoghraphy.confirmSubTitle),
                         ),
                       ],
@@ -184,7 +184,7 @@ class ConfirmBooking extends GetWidget<ConfirmBookingController> {
                         ),
                         Expanded(
                           flex: 1,
-                          child: Text( controller.appointment.value.time ?? '',
+                          child: Text(controller.appointment.value.time ?? '',
                               style: ACSTyphoghraphy.confirmSubTitle),
                         ),
                       ],
@@ -202,7 +202,9 @@ class ConfirmBooking extends GetWidget<ConfirmBookingController> {
                         ),
                         Expanded(
                           flex: 1,
-                          child: Text(controller.appointment.value.date.toString() ?? '',
+                          child: Text(
+                              controller.appointment.value.date.toString() ??
+                                  '',
                               style: ACSTyphoghraphy.confirmSubTitle),
                         ),
                       ],
@@ -215,7 +217,8 @@ class ConfirmBooking extends GetWidget<ConfirmBookingController> {
                 children: [
                   ElevatedButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Quay lại', style: ACSTyphoghraphy.buttonTitle),
+                    child: const Text('Quay lại',
+                        style: ACSTyphoghraphy.buttonTitle),
                     style: ElevatedButton.styleFrom(
                       primary: ACSColors.primary,
                       shape: RoundedRectangleBorder(
@@ -226,7 +229,8 @@ class ConfirmBooking extends GetWidget<ConfirmBookingController> {
                   ),
                   ElevatedButton(
                     onPressed: () => controller.confirmBooking(),
-                    child: const Text('Xác nhận', style: ACSTyphoghraphy.buttonTitle),
+                    child: const Text('Xác nhận',
+                        style: ACSTyphoghraphy.buttonTitle),
                     style: ElevatedButton.styleFrom(
                       primary: ACSColors.primary,
                       shape: RoundedRectangleBorder(

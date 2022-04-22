@@ -80,6 +80,7 @@ class LoginScreen extends GetWidget<LoginController> {
                           color: Colors.black,
                           fontSize: 18,
                         ),
+                        obscureText: true,
                         decoration: InputDecoration(
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8)),

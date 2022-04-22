@@ -6,7 +6,7 @@ class City {
   late final int? id;
   late final String? name;
 
-  City.fromJson(Map<String, dynamic> json){
+  City.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
   }

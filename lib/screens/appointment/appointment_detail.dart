@@ -4,10 +4,7 @@ import 'package:acs_1/styles/acs_typhoghraphy.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../repository/models/appointment.dart';
-
 class AppointmentDetail extends GetWidget<AppointmentController> {
-
   const AppointmentDetail({
     Key? key,
   }) : super(key: key);
@@ -45,11 +42,13 @@ class AppointmentDetail extends GetWidget<AppointmentController> {
                 ),
                 Expanded(
                   flex: 1,
-                  child: Obx(() => Text(
+                  child: Obx(
+                    () => Text(
                       /*appointment.status*/
                       "",
                       style: ACSTyphoghraphy.confirmSubTitle.copyWith(
-                        color: changeColorStatus(controller.appointment.value.status),
+                        color: changeColorStatus(
+                            controller.appointment.value.status),
                       ),
                     ),
                   ),
@@ -65,7 +64,8 @@ class AppointmentDetail extends GetWidget<AppointmentController> {
                 ),
                 Expanded(
                   flex: 1,
-                  child: Obx(() => Text(
+                  child: Obx(
+                    () => Text(
                       controller.appointment.value.fullName ?? '',
                       style: ACSTyphoghraphy.confirmSubTitle,
                     ),
@@ -82,7 +82,8 @@ class AppointmentDetail extends GetWidget<AppointmentController> {
                 ),
                 Expanded(
                   flex: 1,
-                  child: Obx(() => Text(
+                  child: Obx(
+                    () => Text(
                       controller.appointment.value.phone ?? '',
                       style: ACSTyphoghraphy.confirmSubTitle,
                     ),
@@ -98,7 +99,8 @@ class AppointmentDetail extends GetWidget<AppointmentController> {
                 ),
                 Expanded(
                   flex: 1,
-                  child: Obx(() => Text(
+                  child: Obx(
+                    () => Text(
                       controller.appointment.value.description ?? '',
                       style: ACSTyphoghraphy.confirmSubTitle,
                     ),
@@ -114,7 +116,8 @@ class AppointmentDetail extends GetWidget<AppointmentController> {
                 ),
                 Expanded(
                   flex: 1,
-                  child: Obx(() => Text(
+                  child: Obx(
+                    () => Text(
                       controller.appointment.value.quantity.toString() ?? '',
                       style: ACSTyphoghraphy.confirmSubTitle,
                     ),
@@ -130,7 +133,8 @@ class AppointmentDetail extends GetWidget<AppointmentController> {
                 ),
                 Expanded(
                   flex: 1,
-                  child: Obx(() => Text(
+                  child: Obx(
+                    () => Text(
                       controller.appointment.value.time ?? '',
                       style: ACSTyphoghraphy.confirmSubTitle,
                     ),
@@ -146,7 +150,8 @@ class AppointmentDetail extends GetWidget<AppointmentController> {
                 ),
                 Expanded(
                   flex: 1,
-                  child: Obx(() => Text(
+                  child: Obx(
+                    () => Text(
                       controller.appointment.value.date ?? '',
                       style: ACSTyphoghraphy.confirmSubTitle,
                     ),
@@ -162,7 +167,8 @@ class AppointmentDetail extends GetWidget<AppointmentController> {
                 ),
                 Expanded(
                   flex: 1,
-                  child: Obx(() => Text(
+                  child: Obx(
+                    () => Text(
                       controller.appointment.value.address ?? '',
                       style: ACSTyphoghraphy.confirmSubTitle,
                       overflow: TextOverflow.clip,
@@ -176,7 +182,8 @@ class AppointmentDetail extends GetWidget<AppointmentController> {
       ),
       bottomNavigationBar: Container(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-        child: Obx(() => ElevatedButton(
+        child: Obx(
+          () => ElevatedButton(
             onPressed: changeStateButton(controller.appointment.value.status),
             child: const Text(
               'Hủy đơn',
