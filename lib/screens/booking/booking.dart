@@ -177,7 +177,7 @@ class BookingScreen extends GetWidget<BookingController> {
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   child: ElevatedButton(
                     onPressed: () {
-                      controller.nextFirstPage();
+                      controller.donePage();
                     },
                     child: const Text('Xác nhận đặt lịch',
                         style: ACSTyphoghraphy.buttonTitle),
@@ -735,6 +735,7 @@ class BookingScreen extends GetWidget<BookingController> {
                 onChanged: (value) {
                   if (value != null) {
                     controller.wardSelected.value = value;
+                    controller.getAvailableSlot(value.id , controller.dateSelected.value.value);
                   }
                 },
                 value: controller.wardSelected.value.id != null
@@ -824,6 +825,7 @@ class BookingScreen extends GetWidget<BookingController> {
                 onChanged: (value) {
                   if (value != null) {
                     controller.dateSelected.value = value;
+                    controller.getAvailableSlot(controller.wardSelected.value.id , value.value);
                   }
                 },
                 value: controller.dateSelected.value.id != null
@@ -842,13 +844,17 @@ class BookingScreen extends GetWidget<BookingController> {
             ),
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
-                items: BookingData.times.map(buildMenuItem2).toList(),
+                items: controller.listHour
+                    .map((e) => buildMenuItem2(e))
+                    .toList(),
                 icon: Image.asset('assets/icons/arrow-down.png'),
                 elevation: 0,
                 isExpanded: true,
                 hint: const Text("Chọn giờ", style: ACSTyphoghraphy.heading1),
-                onChanged: (value) {},
-                value: BookingData.times[0],
+                onChanged: (value) {
+                  controller.hourSelected.value = value ?? "";
+                },
+                value: controller.hourSelected.value.isEmptyOrNull ? null : controller.hourSelected.value,
               ),
             ),
           ),

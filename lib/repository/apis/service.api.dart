@@ -33,5 +33,9 @@ class ServiceApi extends BaseConnect {
     return await pathRequest('/appointment/cancel/$id');
   }
 
+  Future<BaseResponse?> availableSlot(Map<String, dynamic> map) async {
+    return await getResponse('/slot/available', query: map);
+  }
+
 }
 

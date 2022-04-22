@@ -34,7 +34,7 @@ class ConfirmBookingController extends GetxController {
               else
                 showSnackBar(
                     title: "Báo lỗi",
-                    content: "Lấy dữ liệu tỉnh/thành phố từ hệ thống lỗi"),
+                    content: "Booking lỗi"),
               hideLoading()
             });
   }

@@ -32,6 +32,9 @@ class BookingController extends GetxController {
   var listDate = <DateObject>[].obs;
   var dateSelected = DateObject().obs;
 
+  var listHour = <String>[].obs;
+  var hourSelected = "".obs;
+
   final introKey = GlobalKey<IntroductionScreenState>();
   final _serviceRepo = Get.find<ServiceRepo>();
 
@@ -174,65 +177,66 @@ class BookingController extends GetxController {
   getListPage() async {
     // DateObject day = DateObject(id: '0', value: 'Chọn giờ');
     // listDate.add(day);
-    DateObject day1 = DateObject(
-      id: '${DateTime.now().year.toString()}-${DateTime.now().month.toString()}-${int.parse(DateTime.now().day.toString()) + 1}',
-      value:
-          '${int.parse(DateTime.now().day.toString()) + 1}-${DateTime.now().month.toString()}-${DateTime.now().year.toString()}',
-    );
-    DateObject day2 = DateObject(
-      id: '${DateTime.now().year.toString()}-${DateTime.now().month.toString()}-${int.parse(DateTime.now().day.toString()) + 2}',
-      value:
-          '${int.parse(DateTime.now().day.toString()) + 2}-${DateTime.now().month.toString()}-${DateTime.now().year.toString()}',
-    );
-    DateObject day3 = DateObject(
-      id: '${DateTime.now().year.toString()}-${DateTime.now().month.toString()}-${int.parse(DateTime.now().day.toString()) + 3}',
-      value:
-          '${int.parse(DateTime.now().day.toString()) + 3}-${DateTime.now().month.toString()}-${DateTime.now().year.toString()}',
-    );
-    listDate.add(day1);
-    listDate.add(day2);
-    listDate.add(day3);
-  }
-
-  nextFirstPage() {
-    if (firstPageFormKey.currentState?.validate() == true) {
-      introKey.currentState?.controller.nextPage(
-          duration: const Duration(milliseconds: 500), curve: Curves.ease);
+    for(int i = -3; i <= 3; i++){
+      DateObject day = DateObject(
+        id: i.toString(),
+        value: DateFormat(FORMAT_DAY).format(DateTime.now().add(Duration(days: i))),
+      );
+      listDate.add(day);
     }
   }
 
-  nextSecondPage() {
-    if (addressFormKey.currentState?.validate() == true) {
+  getAvailableSlot(int? wardId, String? date) async {
+    if (wardId != null && date != null) {
+      showLoading();
+      await _serviceRepo.getAvailableSlot({"bookingDate": date, "wardId": wardId.toString()})
+          .then((value) => {
+        if (value != null) {
+          listHour.value = value.map((e) => "${e.slotStart}").toList(),
+          hourSelected.value = ""
+        }
+        else
+          showSnackBar(
+              title: "Báo lỗi",
+              content: "Lấy dữ liệu Slot từ hệ thống lỗi"),
+        hideLoading()
+      });
+    }
+  }
+
+  donePage() {
+    if (addressFormKey.currentState?.validate() == true &&
+        firstPageFormKey.currentState?.validate() == true &&
+        infoUserFormKey.currentState?.validate() == true) {
+
       if (citySelected.value.id == null) {
         showSnackBar(title: "Cảnh báo", content: "Hãy chọn thành phố/tỉnh");
       } else if (districtSelected.value.id == null) {
         showSnackBar(title: "Cảnh báo", content: "Hãy chọn quận/huyện");
       } else if (wardSelected.value.id == null) {
         showSnackBar(title: "Cảnh báo", content: "Hãy chọn phường/xã");
-      } else {
-        introKey.currentState?.controller.nextPage(
-            duration: const Duration(milliseconds: 500), curve: Curves.ease);
+      } else if (dateSelected.value.id == null) {
+        showSnackBar(title: "Cảnh báo", content: "Hãy chọn ngày");
+      } else if (hourSelected.value.isEmpty) {
+        showSnackBar(title: "Cảnh báo", content: "Hãy chọn giờ");
       }
-    }
-  }
-
-  donePage() {
-    if (infoUserFormKey.currentState?.validate() == true) {
-      Profile? profile = _dataStorage.getToken();
-      if (profile != null) {
-        var appointment = Appointment(
-            customerId: profile.id,
-            wardId: wardSelected.value.id,
-            fullName: lastNameController.text + firstNameController.text,
-            description: descriptionController.text,
-            phone: phoneController.text,
-            address: addressController.text,
-            date: DateFormat(FORMAT_DAY).format(DateTime.now()),
-            time: '8',
-            quantity: int.tryParse(amountController.text));
-        goTo(screen: ROUTER_CONFIRM_BOOKING, argument: appointment);
-      } else {
-        showSnackBar(title: "Báo lỗi", content: "User id null");
+      else {
+        Profile? profile = _dataStorage.getToken();
+        if (profile != null) {
+          var appointment = Appointment(
+              customerId: profile.id,
+              wardId: wardSelected.value.id,
+              fullName: lastNameController.text + firstNameController.text,
+              description: descriptionController.text,
+              phone: phoneController.text,
+              address: addressController.text,
+              date: dateSelected.value.value ?? DateFormat(FORMAT_DAY).format(DateTime.now()),
+              time: hourSelected.value ?? "unKnow",
+              quantity: int.tryParse(amountController.text));
+          goTo(screen: ROUTER_CONFIRM_BOOKING, argument: appointment);
+        } else {
+          showSnackBar(title: "Báo lỗi", content: "User id null");
+        }
       }
     }
   }
