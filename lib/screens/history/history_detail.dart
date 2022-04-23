@@ -1,9 +1,11 @@
+import 'package:acs_1/repository/models/order_detail_.dart';
+import 'package:acs_1/screens/history/history.controller.dart';
 import 'package:acs_1/styles/acs_colors.dart';
 import 'package:acs_1/styles/acs_typhoghraphy.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class HistoryDetail extends StatelessWidget {
+class HistoryDetail extends GetWidget<HistoryController> {
   const HistoryDetail({Key? key}) : super(key: key);
 
   @override
@@ -52,7 +54,7 @@ class HistoryDetail extends StatelessWidget {
                   const Divider(color: ACSColors.background, thickness: 2),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Expanded(
                         flex: 2,
                         child: Text(
@@ -62,9 +64,10 @@ class HistoryDetail extends StatelessWidget {
                       ),
                       Expanded(
                         flex: 2,
-                        child: Text(
-                          'Chị Uyên',
-                          style: ACSTyphoghraphy.detail,
+                        child: Obx(() => Text(
+                            controller.orderHistory.value.fullName.toString(),
+                            style: ACSTyphoghraphy.detail,
+                          ),
                         ),
                       ),
                     ],
@@ -72,7 +75,7 @@ class HistoryDetail extends StatelessWidget {
                   const SizedBox(height: 10),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Expanded(
                         flex: 2,
                         child: Text(
@@ -82,9 +85,10 @@ class HistoryDetail extends StatelessWidget {
                       ),
                       Expanded(
                         flex: 2,
-                        child: Text(
-                          '0378285566',
-                          style: ACSTyphoghraphy.detail,
+                        child: Obx(() => Text(
+                            controller.orderHistory.value.phone.toString(),
+                            style: ACSTyphoghraphy.detail,
+                          ),
                         ),
                       ),
                     ],
@@ -92,7 +96,7 @@ class HistoryDetail extends StatelessWidget {
                   const SizedBox(height: 10),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Expanded(
                         flex: 1,
                         child: Text(
@@ -102,9 +106,10 @@ class HistoryDetail extends StatelessWidget {
                       ),
                       Expanded(
                         flex: 2,
-                        child: Text(
-                          'Số 123 đường S11 - Phường An Lạc - Quận Bình Tân',
-                          style: ACSTyphoghraphy.detail,
+                        child: Obx(() => Text(
+                            controller.orderHistory.value.address.toString(),
+                            style: ACSTyphoghraphy.detail,
+                          ),
                         ),
                       ),
                     ],
@@ -137,7 +142,7 @@ class HistoryDetail extends StatelessWidget {
                   const Divider(color: ACSColors.background, thickness: 2),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Expanded(
                         flex: 2,
                         child:
@@ -146,14 +151,14 @@ class HistoryDetail extends StatelessWidget {
                       Expanded(
                         flex: 2,
                         child:
-                            Text('07/01/2022', style: ACSTyphoghraphy.detail),
+                        Obx(() => Text(controller.orderHistory.value.date.toString(), style: ACSTyphoghraphy.detail)),
                       ),
                     ],
                   ),
                   const SizedBox(height: 10),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Expanded(
                         flex: 2,
                         child:
@@ -161,24 +166,25 @@ class HistoryDetail extends StatelessWidget {
                       ),
                       Expanded(
                         flex: 2,
-                        child: Text('4', style: ACSTyphoghraphy.detail),
+                        child: Obx(() => Text(controller.orderHistory.value.quantity.toString(), style: ACSTyphoghraphy.detail)),
                       ),
                     ],
                   ),
                   const SizedBox(height: 10),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Expanded(
                         flex: 2,
                         child: Text('Tình trạng', style: ACSTyphoghraphy.title),
                       ),
                       Expanded(
                         flex: 2,
-                        child: Text(
-                          'Hư bộ phận bơm ga, bụi bẩn',
-                          style: ACSTyphoghraphy.detail,
-                          overflow: TextOverflow.clip,
+                        child: Obx(() => Text(
+                            controller.orderHistory.value.description.toString(),
+                            style: ACSTyphoghraphy.detail,
+                            overflow: TextOverflow.clip,
+                          ),
                         ),
                       ),
                     ],
@@ -188,26 +194,28 @@ class HistoryDetail extends StatelessWidget {
                   const SizedBox(height: 10),
 
                   SizedBox(
-                    child: ListView.builder(
-                      itemCount: 2,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (BuildContext context, int index) {
-                        return ListTile(
-                          title: Text(
-                            'Kiểm tra máy',
-                            style: ACSTyphoghraphy.detail
-                                .copyWith(color: ACSColors.text),
-                            overflow: TextOverflow.clip,
-                          ),
-                          trailing: Text(
-                            '150.000 VNĐ',
-                            style: ACSTyphoghraphy.detail
-                                .copyWith(color: ACSColors.secondaryText),
-                            overflow: TextOverflow.clip,
-                          ),
-                        );
-                      },
+                    child: Obx(() => ListView.builder(
+                        itemCount: controller.orderDetails.length,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (BuildContext context, int index) {
+                          OrderDetailX order = controller.orderDetails[index];
+                          return ListTile(
+                            title: Text(
+                              order.serviceName.toString(),
+                              style: ACSTyphoghraphy.detail
+                                  .copyWith(color: ACSColors.text),
+                              overflow: TextOverflow.clip,
+                            ),
+                            trailing: Text(
+                              order.servicePrice.toString(),
+                              style: ACSTyphoghraphy.detail
+                                  .copyWith(color: ACSColors.secondaryText),
+                              overflow: TextOverflow.clip,
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
 
@@ -223,12 +231,13 @@ class HistoryDetail extends StatelessWidget {
                       ),
                       Expanded(
                         flex: 1,
-                        child: Text(
-                          '700.000 VNĐ',
-                          style: ACSTyphoghraphy.detail.copyWith(
-                            color: const Color.fromRGBO(14, 151, 19, 1),
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
+                        child: Obx(() => Text(
+                            controller.orderHistory.value.orderTotalPrice.toString(),
+                            style: ACSTyphoghraphy.detail.copyWith(
+                              color: const Color.fromRGBO(14, 151, 19, 1),
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                       ),

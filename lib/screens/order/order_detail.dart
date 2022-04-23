@@ -1,9 +1,13 @@
+import 'package:acs_1/repository/models/order_history.dart';
+import 'package:acs_1/screens/order/order_detail.controller.dart';
 import 'package:acs_1/styles/acs_colors.dart';
 import 'package:acs_1/styles/acs_typhoghraphy.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class OrderDetailScreen extends StatelessWidget {
+import '../../repository/models/order_detail_.dart';
+
+class OrderDetailScreen extends GetWidget<OrderDetailController> {
   const OrderDetailScreen({Key? key}) : super(key: key);
 
   @override
@@ -52,7 +56,7 @@ class OrderDetailScreen extends StatelessWidget {
                   const Divider(color: ACSColors.background, thickness: 2),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Expanded(
                         flex: 2,
                         child: Text(
@@ -62,9 +66,10 @@ class OrderDetailScreen extends StatelessWidget {
                       ),
                       Expanded(
                         flex: 2,
-                        child: Text(
-                          'Chị Uyên',
-                          style: ACSTyphoghraphy.detail,
+                        child: Obx(() => Text(
+                            controller.appointment.value.fullName ?? '',
+                            style: ACSTyphoghraphy.detail,
+                          ),
                         ),
                       ),
                     ],
@@ -72,7 +77,7 @@ class OrderDetailScreen extends StatelessWidget {
                   const SizedBox(height: 10),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Expanded(
                         flex: 2,
                         child: Text(
@@ -82,9 +87,10 @@ class OrderDetailScreen extends StatelessWidget {
                       ),
                       Expanded(
                         flex: 2,
-                        child: Text(
-                          '0378285566',
-                          style: ACSTyphoghraphy.detail,
+                        child: Obx(() => Text(
+                            controller.appointment.value.phone ?? '',
+                            style: ACSTyphoghraphy.detail,
+                          ),
                         ),
                       ),
                     ],
@@ -92,7 +98,7 @@ class OrderDetailScreen extends StatelessWidget {
                   const SizedBox(height: 10),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Expanded(
                         flex: 1,
                         child: Text(
@@ -102,9 +108,10 @@ class OrderDetailScreen extends StatelessWidget {
                       ),
                       Expanded(
                         flex: 2,
-                        child: Text(
-                          'Số 123 đường S11 - Phường An Lạc - Quận Bình Tân',
-                          style: ACSTyphoghraphy.detail,
+                        child: Obx(() =>  Text(
+                            controller.appointment.value.address ?? '',
+                            style: ACSTyphoghraphy.detail,
+                          ),
                         ),
                       ),
                     ],
@@ -137,7 +144,7 @@ class OrderDetailScreen extends StatelessWidget {
                   const Divider(color: ACSColors.background, thickness: 2),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Expanded(
                         flex: 2,
                         child:
@@ -146,14 +153,14 @@ class OrderDetailScreen extends StatelessWidget {
                       Expanded(
                         flex: 2,
                         child:
-                            Text('07/01/2022', style: ACSTyphoghraphy.detail),
+                        Obx(() =>  Text(controller.appointment.value.date ?? '', style: ACSTyphoghraphy.detail)),
                       ),
                     ],
                   ),
                   const SizedBox(height: 10),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Expanded(
                         flex: 2,
                         child:
@@ -161,24 +168,25 @@ class OrderDetailScreen extends StatelessWidget {
                       ),
                       Expanded(
                         flex: 2,
-                        child: Text('4', style: ACSTyphoghraphy.detail),
+                        child: Obx(() => Text(controller.appointment.value.quantity.toString(), style: ACSTyphoghraphy.detail)),
                       ),
                     ],
                   ),
                   const SizedBox(height: 10),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Expanded(
                         flex: 2,
                         child: Text('Tình trạng', style: ACSTyphoghraphy.title),
                       ),
                       Expanded(
                         flex: 2,
-                        child: Text(
-                          'Hư bộ phận bơm ga, bụi bẩn',
-                          style: ACSTyphoghraphy.detail,
-                          overflow: TextOverflow.clip,
+                        child: Obx(() =>  Text(
+                            controller.appointment.value.description ?? '',
+                            style: ACSTyphoghraphy.detail,
+                            overflow: TextOverflow.clip,
+                          ),
                         ),
                       ),
                     ],
@@ -186,7 +194,7 @@ class OrderDetailScreen extends StatelessWidget {
                   const SizedBox(height: 10),
                   const Text('Nội dung', style: ACSTyphoghraphy.title),
                   const SizedBox(height: 10),
-                  ListTile(
+/*                  ListTile(
                     title: Text(
                       'Kiểm tra máy',
                       style: ACSTyphoghraphy.detail
@@ -199,130 +207,138 @@ class OrderDetailScreen extends StatelessWidget {
                           .copyWith(color: ACSColors.secondaryText),
                       overflow: TextOverflow.clip,
                     ),
-                  ),
+                  ),*/
                   SizedBox(
-                    child: ListView.builder(
-                      itemCount: 2,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (BuildContext context, int index) {
-                        return ListTile(
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (_) {
-                                return AlertDialog(
-                                  content: SizedBox(
-                                    height: 180,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        RichText(
-                                          text: TextSpan(
-                                            text: 'Loại dịch vụ: ',
-                                            style: ACSTyphoghraphy
-                                                .appointmentTitle
-                                                .copyWith(
-                                              color: Colors.black54,
-                                              fontSize: 18,
-                                              overflow: TextOverflow.clip,
-                                            ),
+                    child: Obx(() => ListView.builder(
+                        itemCount: controller.orderDetails.length,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (BuildContext context, int index) {
+                          OrderDetailX detail = controller.orderDetails[index];
+                          if(detail.status == 3 || detail.status == 4) {
+                            return ListTile(
+                              onTap: () {
+                                if(detail.status != 4){
+                                  showDialog(
+                                    context: context,
+                                    builder: (_) {
+                                      return AlertDialog(
+                                        content: SizedBox(
+                                          height: 180,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
                                             children: [
-                                              TextSpan(
-                                                text: 'Thay linh kiện',
-                                                style: ACSTyphoghraphy
-                                                    .appointmentDetail
-                                                    .copyWith(
-                                                  color: Colors.black45,
-                                                  fontSize: 18,
+                                              RichText(
+                                                text: TextSpan(
+                                                  text: 'Loại dịch vụ: ',
+                                                  style: ACSTyphoghraphy
+                                                      .appointmentTitle
+                                                      .copyWith(
+                                                    color: Colors.black54,
+                                                    fontSize: 18,
+                                                    overflow: TextOverflow.clip,
+                                                  ),
+                                                  children: [
+                                                    TextSpan(
+                                                      text: detail.serviceName,
+                                                      style: ACSTyphoghraphy
+                                                          .appointmentDetail
+                                                          .copyWith(
+                                                        color: Colors.black45,
+                                                        fontSize: 18,
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
+                                              ),
+                                              RichText(
+                                                text: TextSpan(
+                                                  text: 'Giá tiền: ',
+                                                  style: ACSTyphoghraphy
+                                                      .appointmentTitle
+                                                      .copyWith(
+                                                    color: Colors.black54,
+                                                    fontSize: 18,
+                                                  ),
+                                                  children: [
+                                                    TextSpan(
+                                                      text: detail.servicePrice.toString(),
+                                                      style: ACSTyphoghraphy
+                                                          .appointmentDetail
+                                                          .copyWith(
+                                                        color: Colors.black45,
+                                                        fontSize: 18,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              RichText(
+                                                text: TextSpan(
+                                                  text: 'Miêu tả: ',
+                                                  style: ACSTyphoghraphy
+                                                      .appointmentTitle
+                                                      .copyWith(
+                                                    color: Colors.black54,
+                                                    fontSize: 18,
+                                                  ),
+                                                  children: [
+                                                    TextSpan(
+                                                      text: detail.description,
+                                                      style: ACSTyphoghraphy
+                                                          .appointmentDetail
+                                                          .copyWith(
+                                                        color: Colors.black45,
+                                                        fontSize: 18,
+                                                        overflow: TextOverflow.clip,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  TextButton(
+                                                    onPressed: () => controller.denyOrderDetail(detail.id),
+                                                    child: Text('Từ chối'),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () => controller.acceptOrderDetail(detail.id),
+                                                    child: Text('Đồng ý'),
+                                                  ),
+                                                ],
                                               ),
                                             ],
                                           ),
                                         ),
-                                        RichText(
-                                          text: TextSpan(
-                                            text: 'Giá tiền: ',
-                                            style: ACSTyphoghraphy
-                                                .appointmentTitle
-                                                .copyWith(
-                                              color: Colors.black54,
-                                              fontSize: 18,
-                                            ),
-                                            children: [
-                                              TextSpan(
-                                                text: '300.000VNĐ',
-                                                style: ACSTyphoghraphy
-                                                    .appointmentDetail
-                                                    .copyWith(
-                                                  color: Colors.black45,
-                                                  fontSize: 18,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        RichText(
-                                          text: TextSpan(
-                                            text: 'Miêu tả: ',
-                                            style: ACSTyphoghraphy
-                                                .appointmentTitle
-                                                .copyWith(
-                                              color: Colors.black54,
-                                              fontSize: 18,
-                                            ),
-                                            children: [
-                                              TextSpan(
-                                                text: 'Thay dây đồng loại 1',
-                                                style: ACSTyphoghraphy
-                                                    .appointmentDetail
-                                                    .copyWith(
-                                                  color: Colors.black45,
-                                                  fontSize: 18,
-                                                  overflow: TextOverflow.clip,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            TextButton(
-                                              onPressed: () {},
-                                              child: Text('Từ chối'),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {},
-                                              child: Text('Đồng ý'),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                );
+                                      );
+                                    },
+                                  );
+                                }
                               },
+                              title: Text(
+                                detail.serviceName ?? '',
+                                style: ACSTyphoghraphy.detail
+                                    .copyWith(color: ACSColors.text),
+                                overflow: TextOverflow.clip,
+                              ),
+                              trailing: Text(
+                                detail.status == 4 ? detail.servicePrice.toString() : 'Chờ xác nhận',
+                                style: ACSTyphoghraphy.detail
+                                    .copyWith(color: ACSColors.secondaryText),
+                                overflow: TextOverflow.clip,
+                              ),
                             );
-                          },
-                          title: Text(
-                            'Thay linh kiện',
-                            style: ACSTyphoghraphy.detail
-                                .copyWith(color: ACSColors.text),
-                            overflow: TextOverflow.clip,
-                          ),
-                          trailing: Text(
-                            'Chờ xác nhận',
-                            style: ACSTyphoghraphy.detail
-                                .copyWith(color: ACSColors.secondaryText),
-                            overflow: TextOverflow.clip,
-                          ),
-                        );
-                      },
+                          } else {
+                            return Container();
+                          }
+                        },
+                      ),
                     ),
                   ),
                 ],

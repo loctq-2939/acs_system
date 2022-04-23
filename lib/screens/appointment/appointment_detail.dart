@@ -1,3 +1,5 @@
+import 'package:acs_1/@share/router/pages.dart';
+import 'package:acs_1/@share/utils/util.dart';
 import 'package:acs_1/screens/appointment/appointment.controller.dart';
 import 'package:acs_1/screens/history/history_detail.dart';
 import 'package:acs_1/screens/order/order_detail.dart';
@@ -201,7 +203,7 @@ class AppointmentDetail extends GetWidget<AppointmentController> {
     if (status == 2) {
       return ElevatedButton(
         onPressed: () {
-          Get.to(() => const OrderDetailScreen());
+          goTo(screen: ROUTER_ORDER_DETAIL,argument: [controller.appointment.value]);
         },
         child: const Text(
           'Xem hóa đơn',

@@ -1,9 +1,12 @@
 import 'package:acs_1/repository/apis/service.api.dart';
 import 'package:acs_1/repository/models/appointment.dart';
 import 'package:acs_1/repository/models/distric.dart';
+import 'package:acs_1/repository/models/order_history.dart';
 import 'package:acs_1/repository/models/slot.dart';
 import 'package:acs_1/repository/models/ward.dart';
 import '../models/city.dart';
+import '../models/order.dart';
+import '../models/order_detail_.dart';
 import '../models/service.dart';
 
 class ServiceRepo {
@@ -59,5 +62,32 @@ class ServiceRepo {
   Future<List<Slot>?> getAvailableSlot(Map<String, dynamic> map) async {
     var res = await serviceApi.availableSlot(map);
     return res?.success == true ? List.from(res?.data).map((e) => Slot.fromJson(e)).toList() : null;
+  }
+
+  Future<Order?> getOrderByAppointmentId({required int appointmentId}) async {
+    var res = await serviceApi.getOrderByAppointmentId(appointmentId: appointmentId);
+    return res?.success == true ? Order.fromJson(res?.data) : null;
+  }
+
+  Future<List<OrderDetailX>?> getOrderDetailsByOrderId({required int orderId}) async {
+    var res = await serviceApi.getOrderDetailsByOrderId(orderId: orderId);
+    return res?.success == true ? List.from(res?.data).map((e)=> OrderDetailX.fromJson(e)).toList() : null;
+  }
+
+  Future<bool> acceptOrderDetail({required int id}) async {
+    var res = await serviceApi.acceptOrderDetail(id: id);
+    return res?.success ?? false;
+  }
+
+  Future<bool> denyOrderDetail({required int id}) async {
+    var res = await serviceApi.denyOrderDetail(id: id);
+    return res?.success ?? false;
+  }
+
+  Future<List<OrderHistory>?> getCompletedOrderByCusId({required int customer}) async {
+    var res = await serviceApi.getCompletedOrderByCusId(cusID: customer);
+    return res?.success == true
+        ? List.from(res?.data).map((e) => OrderHistory.fromJson(e)).toList()
+        : null;
   }
 }

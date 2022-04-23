@@ -1,3 +1,4 @@
+import 'package:acs_1/repository/models/order_history.dart';
 import 'package:acs_1/screens/history/history_detail.dart';
 import 'package:acs_1/styles/acs_colors.dart';
 import 'package:acs_1/styles/acs_typhoghraphy.dart';
@@ -5,18 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../repository/models/dummy_data.dart';
+import 'history.controller.dart';
 
-class HistoryScreen extends StatefulWidget {
-  HistoryScreen({Key? key}) : super(key: key);
-
-  @override
-  State<HistoryScreen> createState() => _HistoryScreenState();
-}
-
-class _HistoryScreenState extends State<HistoryScreen> {
-  final status = ['Tất cả', 'Đã hoàn thành', 'Đã hủy'];
-
-  var _status = 'Tất cả';
+class HistoryScreen extends GetWidget<HistoryController> {
+  const HistoryScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,71 +26,78 @@ class _HistoryScreenState extends State<HistoryScreen> {
           children: [
             const SizedBox(height: 30),
             SizedBox(
-              child: ListView.builder(
-                itemCount: listOrder.length,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (BuildContext context, int index) {
-                  return InkWell(
-                    onTap: () => Get.to(() => const HistoryDetail()),
-                    child: Container(
-                      margin: const EdgeInsets.only(
-                          left: 16, right: 16, bottom: 20),
-                      padding: const EdgeInsets.all(16),
-                      height: 125,
-                      decoration: BoxDecoration(
-                        color: ACSColors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: ACSColors.primary, width: 1),
-                      ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: const [
-                                Text('Dịch vụ',
-                                    style: ACSTyphoghraphy.appointmentTitle),
-                                Text('Trạng thái',
-                                    style: ACSTyphoghraphy.appointmentTitle),
-                                Text('Thời gian',
-                                    style: ACSTyphoghraphy.appointmentTitle),
-                                Text('Ngày',
-                                    style: ACSTyphoghraphy.appointmentTitle),
-                              ],
+              child: Obx(() =>
+                  ListView.builder(
+                  itemCount: controller.listOrder.length,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (BuildContext context, int index) {
+                    OrderHistory order = controller.listOrder[index];
+                    return InkWell(
+                      onTap: () {
+                        controller.orderHistory.value = controller.listOrder[index];
+                        controller.getOrderDetailsByOrderId(controller.orderHistory.value.orderId);
+                        Get.to(() => const HistoryDetail());
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.only(
+                            left: 16, right: 16, bottom: 20),
+                        padding: const EdgeInsets.all(16),
+                        height: 125,
+                        decoration: BoxDecoration(
+                          color: ACSColors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: ACSColors.primary, width: 1),
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: const [
+                                  Text('Dịch vụ',
+                                      style: ACSTyphoghraphy.appointmentTitle),
+                                  Text('Trạng thái',
+                                      style: ACSTyphoghraphy.appointmentTitle),
+                                  Text('Thời gian',
+                                      style: ACSTyphoghraphy.appointmentTitle),
+                                  Text('Ngày',
+                                      style: ACSTyphoghraphy.appointmentTitle),
+                                ],
+                              ),
                             ),
-                          ),
-                          Expanded(
-                            flex: 3,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Text(listOrder[index].serviceType,
-                                    style: ACSTyphoghraphy.appointmentDetail),
-                                Text(
-                                  listOrder[index].status,
-                                  style: ACSTyphoghraphy.appointmentDetail
-                                      .copyWith(
-                                    color: changeColorStatus(
-                                        listOrder[index].status),
+                            Expanded(
+                              flex: 3,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(order.description.toString(),
+                                      style: ACSTyphoghraphy.appointmentDetail),
+                                  Text(
+                                    order.orderStatus.toString(),
+                                    style: ACSTyphoghraphy.appointmentDetail
+                                        .copyWith(
+                                      color: changeColorStatus(
+                                          order.orderStatus.toString()),
+                                    ),
                                   ),
-                                ),
-                                Text(listOrder[index].time,
-                                    style: ACSTyphoghraphy.appointmentDetail),
-                                Text(listOrder[index].date,
-                                    style: ACSTyphoghraphy.appointmentDetail),
-                              ],
+                                  Text(order.time.toString(),
+                                      style: ACSTyphoghraphy.appointmentDetail),
+                                  Text(order.date.toString(),
+                                      style: ACSTyphoghraphy.appointmentDetail),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             ),
           ],
