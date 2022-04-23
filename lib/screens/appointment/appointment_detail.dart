@@ -1,4 +1,6 @@
 import 'package:acs_1/screens/appointment/appointment.controller.dart';
+import 'package:acs_1/screens/history/history_detail.dart';
+import 'package:acs_1/screens/order/order_detail.dart';
 import 'package:acs_1/styles/acs_colors.dart';
 import 'package:acs_1/styles/acs_typhoghraphy.dart';
 import 'package:flutter/material.dart';
@@ -43,14 +45,7 @@ class AppointmentDetail extends GetWidget<AppointmentController> {
                 Expanded(
                   flex: 1,
                   child: Obx(
-                    () => Text(
-                      /*appointment.status*/
-                      "",
-                      style: ACSTyphoghraphy.confirmSubTitle.copyWith(
-                        color: changeColorStatus(
-                            controller.appointment.value.status),
-                      ),
-                    ),
+                    () => changeTextStatus(controller.appointment.value.status),
                   ),
                 ),
               ],
@@ -183,40 +178,108 @@ class AppointmentDetail extends GetWidget<AppointmentController> {
       bottomNavigationBar: Container(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         child: Obx(
-          () => ElevatedButton(
-            onPressed: changeStateButton(controller.appointment.value.status),
-            child: const Text(
-              'Hủy đơn',
-              style: ACSTyphoghraphy.buttonTitle,
-            ),
-            style: ElevatedButton.styleFrom(
-                primary: ACSColors.red,
-                padding: const EdgeInsets.all(10),
-                minimumSize: const Size(160, 48),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10))),
-          ),
+          () => changeButtonByStatus(controller.appointment.value.status),
+          // () => ElevatedButton(
+          //   onPressed: changeStateButton(controller.appointment.value.status),
+          //   child: const Text(
+          //     'Hủy đơn',
+          //     style: ACSTyphoghraphy.buttonTitle,
+          //   ),
+          //   style: ElevatedButton.styleFrom(
+          //       primary: ACSColors.red,
+          //       padding: const EdgeInsets.all(10),
+          //       minimumSize: const Size(160, 48),
+          //       shape: RoundedRectangleBorder(
+          //           borderRadius: BorderRadius.circular(10))),
+          // ),
         ),
       ),
     );
   }
 
-  String changeIconStatus(int status) {
-    if (status == 1) {
-      return 'assets/icons/error.png';
-    } else if (status == 2) {
-      return 'assets/icons/check.png';
+  ElevatedButton changeButtonByStatus(int? status) {
+    if (status == 2) {
+      return ElevatedButton(
+        onPressed: () {
+          Get.to(() => const OrderDetailScreen());
+        },
+        child: const Text(
+          'Xem hóa đơn',
+          style: ACSTyphoghraphy.buttonTitle,
+        ),
+        style: ElevatedButton.styleFrom(
+            primary: ACSColors.primary,
+            padding: const EdgeInsets.all(10),
+            minimumSize: const Size(160, 48),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10))),
+      );
+    } else if (status == 1) {
+      return ElevatedButton(
+        onPressed: changeStateButton(controller.appointment.value.status),
+        child: const Text(
+          'Đóng',
+          style: ACSTyphoghraphy.buttonTitle,
+        ),
+        style: ElevatedButton.styleFrom(
+            primary: ACSColors.primary,
+            padding: const EdgeInsets.all(10),
+            minimumSize: const Size(160, 48),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10))),
+      );
+    } else if (status == 3) {
+      return ElevatedButton(
+        onPressed: changeStateButton(controller.appointment.value.status),
+        child: const Text(
+          'Hủy lịch hẹn',
+          style: ACSTyphoghraphy.buttonTitle,
+        ),
+        style: ElevatedButton.styleFrom(
+            primary: ACSColors.primary,
+            padding: const EdgeInsets.all(10),
+            minimumSize: const Size(160, 48),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10))),
+      );
     }
-    return 'assets/icons/waiting.png';
+    return ElevatedButton(
+      onPressed: () {},
+      child: const Text(
+        'Xem hóa đơn',
+        style: ACSTyphoghraphy.buttonTitle,
+      ),
+      style: ElevatedButton.styleFrom(
+          primary: ACSColors.primary,
+          padding: const EdgeInsets.all(10),
+          minimumSize: const Size(160, 48),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
+    );
   }
 
-  Color changeColorStatus(int? status) {
+  Text changeTextStatus(int? status) {
     if (status == 1) {
-      return Colors.red;
+      return Text(
+        'Đã hủy',
+        style: ACSTyphoghraphy.appointmentDetail.copyWith(color: Colors.red),
+      );
     } else if (status == 2) {
-      return Colors.green;
+      return Text(
+        'Đã tiếp nhận',
+        style: ACSTyphoghraphy.appointmentDetail.copyWith(color: Colors.blue),
+      );
+    } else if (status == 3) {
+      return Text(
+        'Đang chờ',
+        style: ACSTyphoghraphy.appointmentDetail
+            .copyWith(color: Colors.yellow.shade700),
+      );
     }
-    return Colors.blue;
+    return Text(
+      'Đã hoàn thành',
+      style: ACSTyphoghraphy.appointmentDetail.copyWith(color: Colors.green),
+    );
   }
 
   VoidCallback? changeStateButton(int? status) {

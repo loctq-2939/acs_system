@@ -38,6 +38,7 @@ dependencies:
   date_picker_timeline: ^1.2.3
   intl: ^0.17.0
   jiffy: ^5.0.0
+  carousel_slider: ^4.0.0
   
 dev_dependencies:
   flutter_test:

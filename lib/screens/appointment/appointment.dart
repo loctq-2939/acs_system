@@ -141,15 +141,6 @@ class AppointmentScreen extends GetWidget<AppointmentController> {
         value: item,
       );
 
-  String changeIconStatus(int? status) {
-    if (status == 1) {
-      return 'assets/icons/error.png';
-    } else if (status == 2) {
-      return 'assets/icons/check.png';
-    }
-    return 'assets/icons/waiting.png';
-  }
-
   Text changeTextStatus(int? status) {
     if (status == 1) {
       return Text(
@@ -158,17 +149,18 @@ class AppointmentScreen extends GetWidget<AppointmentController> {
       );
     } else if (status == 2) {
       return Text(
-        'Đã nhận',
-        style: ACSTyphoghraphy.appointmentDetail.copyWith(color: Colors.orange),
+        'Đã tiếp nhận',
+        style: ACSTyphoghraphy.appointmentDetail.copyWith(color: Colors.blue),
       );
     } else if (status == 3) {
       return Text(
         'Đang chờ',
-        style: ACSTyphoghraphy.appointmentDetail.copyWith(color: Colors.blue),
+        style: ACSTyphoghraphy.appointmentDetail
+            .copyWith(color: Colors.yellow.shade700),
       );
     }
     return Text(
-      'Đã xong',
+      'Đã hoàn thành',
       style: ACSTyphoghraphy.appointmentDetail.copyWith(color: Colors.green),
     );
   }

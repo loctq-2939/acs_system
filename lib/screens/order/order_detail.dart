@@ -3,8 +3,8 @@ import 'package:acs_1/styles/acs_typhoghraphy.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class HistoryDetail extends StatelessWidget {
-  const HistoryDetail({Key? key}) : super(key: key);
+class OrderDetailScreen extends StatelessWidget {
+  const OrderDetailScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -186,7 +186,20 @@ class HistoryDetail extends StatelessWidget {
                   const SizedBox(height: 10),
                   const Text('Nội dung', style: ACSTyphoghraphy.title),
                   const SizedBox(height: 10),
-
+                  ListTile(
+                    title: Text(
+                      'Kiểm tra máy',
+                      style: ACSTyphoghraphy.detail
+                          .copyWith(color: ACSColors.text),
+                      overflow: TextOverflow.clip,
+                    ),
+                    trailing: Text(
+                      '150.000 VNĐ',
+                      style: ACSTyphoghraphy.detail
+                          .copyWith(color: ACSColors.secondaryText),
+                      overflow: TextOverflow.clip,
+                    ),
+                  ),
                   SizedBox(
                     child: ListView.builder(
                       itemCount: 2,
@@ -194,14 +207,116 @@ class HistoryDetail extends StatelessWidget {
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
                         return ListTile(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (_) {
+                                return AlertDialog(
+                                  content: SizedBox(
+                                    height: 180,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        RichText(
+                                          text: TextSpan(
+                                            text: 'Loại dịch vụ: ',
+                                            style: ACSTyphoghraphy
+                                                .appointmentTitle
+                                                .copyWith(
+                                              color: Colors.black54,
+                                              fontSize: 18,
+                                              overflow: TextOverflow.clip,
+                                            ),
+                                            children: [
+                                              TextSpan(
+                                                text: 'Thay linh kiện',
+                                                style: ACSTyphoghraphy
+                                                    .appointmentDetail
+                                                    .copyWith(
+                                                  color: Colors.black45,
+                                                  fontSize: 18,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        RichText(
+                                          text: TextSpan(
+                                            text: 'Giá tiền: ',
+                                            style: ACSTyphoghraphy
+                                                .appointmentTitle
+                                                .copyWith(
+                                              color: Colors.black54,
+                                              fontSize: 18,
+                                            ),
+                                            children: [
+                                              TextSpan(
+                                                text: '300.000VNĐ',
+                                                style: ACSTyphoghraphy
+                                                    .appointmentDetail
+                                                    .copyWith(
+                                                  color: Colors.black45,
+                                                  fontSize: 18,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        RichText(
+                                          text: TextSpan(
+                                            text: 'Miêu tả: ',
+                                            style: ACSTyphoghraphy
+                                                .appointmentTitle
+                                                .copyWith(
+                                              color: Colors.black54,
+                                              fontSize: 18,
+                                            ),
+                                            children: [
+                                              TextSpan(
+                                                text: 'Thay dây đồng loại 1',
+                                                style: ACSTyphoghraphy
+                                                    .appointmentDetail
+                                                    .copyWith(
+                                                  color: Colors.black45,
+                                                  fontSize: 18,
+                                                  overflow: TextOverflow.clip,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            TextButton(
+                                              onPressed: () {},
+                                              child: Text('Từ chối'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {},
+                                              child: Text('Đồng ý'),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
                           title: Text(
-                            'Kiểm tra máy',
+                            'Thay linh kiện',
                             style: ACSTyphoghraphy.detail
                                 .copyWith(color: ACSColors.text),
                             overflow: TextOverflow.clip,
                           ),
                           trailing: Text(
-                            '150.000 VNĐ',
+                            'Chờ xác nhận',
                             style: ACSTyphoghraphy.detail
                                 .copyWith(color: ACSColors.secondaryText),
                             overflow: TextOverflow.clip,
@@ -209,30 +324,6 @@ class HistoryDetail extends StatelessWidget {
                         );
                       },
                     ),
-                  ),
-
-                  // tổng cộng
-                  const Divider(color: ACSColors.background, thickness: 2),
-                  // Tổng giá được api trả về
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Expanded(
-                        flex: 2,
-                        child: Text('Tổng cộng', style: ACSTyphoghraphy.detail),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Text(
-                          '700.000 VNĐ',
-                          style: ACSTyphoghraphy.detail.copyWith(
-                            color: const Color.fromRGBO(14, 151, 19, 1),
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ],
                   ),
                 ],
               ),
